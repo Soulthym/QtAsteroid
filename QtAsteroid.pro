@@ -1,4 +1,8 @@
 QT += widgets
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    mainwindow.cpp
+
+HEADERS += \
+    mainwindow.h
