@@ -1,8 +1,14 @@
 QT += widgets
 
 SOURCES += \
+    asteroidgame.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    optionmenu.cpp \
+    scoreboardmenu.cpp
 
 HEADERS += \
-    mainwindow.h
+    asteroidgame.h \
+    mainwindow.h \
+    optionmenu.h \
+    scoreboardmenu.h
