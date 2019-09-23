@@ -1,0 +1,9 @@
+.compile.sh
+.qmake.stash
+Makefile
+QtAsteroid
+moc_asteroidgame.cpp
+moc_mainwindow.cpp
+moc_optionmenu.cpp
+moc_predefs.h
+moc_scoreboardmenu.cpp
