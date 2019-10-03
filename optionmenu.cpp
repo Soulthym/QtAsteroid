@@ -95,7 +95,7 @@ void OptionMenu::display_remove_confirmation () {   //display infoBoxes when use
         switch (res) {
             case QMessageBox::Yes :
             case QMessageBox::Ok :
-                QFile::remove("score.csv");
+                QFile::remove("scores.csv");
             break;
 
             default :
