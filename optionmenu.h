@@ -16,11 +16,14 @@ public:
 signals:
 
 public slots:
+    void display_remove_confirmation ();
 
 private :
     QGridLayout *optionMenu;
     QComboBox *difficulty;
-    QPushButton *apply;    //apply changes and back to main menu
+
+    QPushButton *resetScoreboard;   //remove the score file
+    QPushButton *apply;             //apply changes and back to main menu
     QPushButton *retourMainMenu;    //return to main menu
 };
 
