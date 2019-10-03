@@ -14,9 +14,9 @@ ScoreBoardMenu::ScoreBoardMenu(QWidget *parent) : QWidget(parent)
     this->loadCsv("./scores.csv", table);
 }
 
-void ScoreBoardMenu::loadCsv(char *filename, QTableWidget *table) {
+void ScoreBoardMenu::loadCsv(const QString filename, QTableWidget *table) {
     table->setRowCount(0);
-    table->setColumnCount(0);
+    table->setColumnCount(2);
     QFile inputFile(filename);
     int rowCount = 0;
     int maxRowCount = 0;
@@ -35,4 +35,5 @@ void ScoreBoardMenu::loadCsv(char *filename, QTableWidget *table) {
         }
         inputFile.close();
     }
+    table->setHorizontalHeaderLabels({"Player","Score"});
 }
