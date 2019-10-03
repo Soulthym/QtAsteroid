@@ -1,3 +1,6 @@
+QtAsteroid.pro.user
+build*
+
 .compile.sh
 .qmake.stash
 Makefile
