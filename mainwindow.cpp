@@ -56,6 +56,8 @@ void MainWindow::link_events (){    //button event linking
     connect(startButton, &QPushButton::pressed, this, &MainWindow::start_game);
     connect(optionsButton, &QPushButton::pressed, this, &MainWindow::display_option_menu);
     connect(scoreboardButton, &QPushButton::pressed, this, &MainWindow::display_scoreboard_menu);
+
+    optionMenu->connectReturnButton(this, SLOT(option_return_to_main_menu()) );
 }
 
 
@@ -76,5 +78,10 @@ void MainWindow::display_option_menu() {
 void MainWindow::display_scoreboard_menu() {
     mainMenu = takeCentralWidget();
     setCentralWidget(scoreboardMenu);
+}
+
+void MainWindow::option_return_to_main_menu () {
+    optionMenu = (OptionMenu*)takeCentralWidget();
+    setCentralWidget(mainMenu);
 }
 

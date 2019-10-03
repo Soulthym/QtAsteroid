@@ -22,6 +22,8 @@ private slots:
     void display_option_menu ();
     void display_scoreboard_menu ();
 
+    void option_return_to_main_menu ();
+
 signals :
 
 protected:
