@@ -24,6 +24,10 @@ ScoreBoardMenu::ScoreBoardMenu(QWidget *parent) : QWidget(parent) {
 	connect(clearButton, SIGNAL(clicked()), this, SLOT(clearCsv()));
 }
 
+void ScoreBoardMenu::reloadCsv() {
+    loadCsv(scoreFilename , table);
+}
+
 void ScoreBoardMenu::loadCsv(const QString filename, QTableWidget *table) {
     table->setRowCount(0);
     table->setColumnCount(2);
@@ -55,4 +59,5 @@ void ScoreBoardMenu::backToMenu(const QObject *receiver, const char *slotMemberF
 void ScoreBoardMenu::clearCsv() {
     QFile csvFile(scoreFilename);
     csvFile.remove();
+    reloadCsv();
 }
