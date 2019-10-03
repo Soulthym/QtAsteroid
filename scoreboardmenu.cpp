@@ -15,8 +15,8 @@ ScoreBoardMenu::ScoreBoardMenu(QWidget *parent) : QWidget(parent)
 }
 
 void ScoreBoardMenu::loadCsv(char *filename, QTableWidget *table) {
-    table->setRowCount(10);
-    table->setColumnCount(2);
+    table->setRowCount(0);
+    table->setColumnCount(0);
     QFile inputFile(filename);
     int rowCount = 0;
     int maxRowCount = 0;
