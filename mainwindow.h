@@ -36,7 +36,6 @@ private:
     ScoreBoardMenu *scoreboardMenu;
 
     //Main menu display elements
-    QWidget *layoutContainerWitget;
     QVBoxLayout *choicesLayout;
     QPushButton *quitButton;
     QPushButton *startButton;

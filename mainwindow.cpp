@@ -17,10 +17,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 void MainWindow::create_main_menu () {
     //Allocations
-    mainMenu = new QWidget ();
-    layoutContainerWitget = new QWidget (mainMenu);
-
-    choicesLayout = new QVBoxLayout (layoutContainerWitget);
+    mainMenu = new QWidget (this);
+    choicesLayout = new QVBoxLayout (mainMenu);
 
     quitButton = new QPushButton ("Quit", mainMenu);
     startButton = new QPushButton ("Start", mainMenu);
@@ -30,19 +28,28 @@ void MainWindow::create_main_menu () {
     gameTitle = new QLabel ("AsQtroids", mainMenu);
 
     //set QLabel
-    gameTitle->setAlignment(Qt::AlignmentFlag::AlignHCenter);
+    gameTitle->setAlignment(Qt::AlignmentFlag::AlignHCenter | Qt::AlignmentFlag::AlignVCenter);
+   // gameTitle->setScaledContents(true);
+    gameTitle->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    QFont font = gameTitle->font();
+    font.setPointSize(72);
+    font.setBold(true);
+    gameTitle->setFont(font);
+
+    QSpacerItem *test;
+    test = new QSpacerItem (20, 40);
 
     //set layout
+    choicesLayout->setSizeConstraint(QLayout::SetMinimumSize);
+
+    choicesLayout->addWidget(gameTitle);
     choicesLayout->addWidget(startButton);
     choicesLayout->addWidget(scoreboardButton);
     choicesLayout->addWidget(optionsButton);
+    choicesLayout->addSpacerItem(test);
+    choicesLayout->addWidget(quitButton);
 
-    layoutContainerWitget->setLayout(choicesLayout);
-
-    //place widgets
-    layoutContainerWitget->setGeometry(170, 130, 160, 190);
-    quitButton->setGeometry(40, 320, 50, 50);
-    gameTitle->setGeometry(0, 80, 490, 50);
+    mainMenu->setLayout(choicesLayout);
 }
 
 void MainWindow::link_events (){    //button event linking
