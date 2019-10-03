@@ -17,6 +17,7 @@ class ScoreBoardMenu : public QWidget
     Q_OBJECT
 public:
     explicit ScoreBoardMenu(QWidget *parent = nullptr);
+    void reloadCsv();
     void loadCsv(const QString filename, QTableWidget *table);
     void backToMenu(const QObject *receiver, const char *slotMemberFunction);
 
