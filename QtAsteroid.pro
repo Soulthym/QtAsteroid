@@ -1,4 +1,4 @@
-QT += widgets
+QT += widgets multimedia
 
 SOURCES += \
     asteroidgame.cpp \

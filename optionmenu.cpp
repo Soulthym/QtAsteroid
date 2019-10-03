@@ -2,24 +2,59 @@
 
 #include <QFile>
 #include <QMessageBox>
+#include <QSoundEffect>
+#include <QAudio>
 
 OptionMenu::OptionMenu(QWidget *parent) : QWidget(parent)
 {
+    soundVolume = 0.5;
     optionMenu = new QGridLayout (this);
 
     difficulty = new QComboBox ();
 
-    apply = new QPushButton ("Apply changes");
     retourMainMenu = new QPushButton ("Return");
     resetScoreboard = new QPushButton ("Reset scoreboard");
 
-    const QStringList diffChoices = {"Noob", "GitGud", "Noice", "Casual"};
-    difficulty->addItems(diffChoices);
+    soundSlider = new QSlider;
 
-    optionMenu->addWidget(difficulty, 0, 0, 1, 3);
-    optionMenu->addWidget(resetScoreboard, 1, 1, 1, 1);
-    optionMenu->addWidget(apply, 3, 0, 1, 1);
-    optionMenu->addWidget(retourMainMenu, 3, 2, 1, 1);
+    optionMenuTitle = new QLabel("Options");
+    displaySoundValue = new QLabel;
+    diffLabel = new QLabel("Difficulties");
+
+    optionMenuTitle->setAlignment(Qt::AlignCenter);
+    QFont font = optionMenuTitle->font();
+    font.setPointSize(60);
+    font.setBold(true);
+    optionMenuTitle->setFont(font);
+
+    //set difficulty choice
+    const QStringList diffChoices = {"Easy", "Normal", "Difficult"};
+    difficulty->addItems(diffChoices);
+    difficulty->setCurrentIndex(1);
+    diffLabel->setAlignment(Qt::AlignCenter);
+
+    //sound slider setup
+    soundSlider->setOrientation(Qt::Orientation::Horizontal);
+    soundSlider->setRange(0, 100);
+    soundSlider->setValue( (int)(soundVolume * 100.0));
+    displaySoundValue->setText( QString::number((int)(soundVolume * 100.0)) + "%");
+    displaySoundValue->setAlignment(Qt::AlignCenter);
+
+    connect (soundSlider, &QSlider::valueChanged, this, &OptionMenu::change_sound_volume);
+
+    //set grid layout
+    for(int i=0; i<3; i++) {
+        optionMenu->setColumnStretch(i, 1);
+        optionMenu->setRowStretch(i, 1);
+    }
+
+    optionMenu->addWidget(optionMenuTitle, 0, 0, 1, 3);
+    optionMenu->addWidget(diffLabel, 1, 0, 1, 1);
+    optionMenu->addWidget(difficulty, 1, 1, 1, 2);
+    optionMenu->addWidget(resetScoreboard, 2, 1, 1, 1);
+    optionMenu->addWidget(displaySoundValue, 3, 0, 1, 1);
+    optionMenu->addWidget(soundSlider, 3, 1, 1, 2);
+    optionMenu->addWidget(retourMainMenu, 5, 2, 1, 1);
 
     connect (resetScoreboard, &QPushButton::pressed, this, &OptionMenu::display_remove_confirmation);
 }
@@ -29,16 +64,31 @@ void OptionMenu::connectReturnButton ( const QObject *receiver, const char * slo
     connect (retourMainMenu, SIGNAL(pressed()), receiver, slotMemberFunction);
 }
 
+int OptionMenu::get_difficulty() {
+    return difficulty->currentIndex();
+}
+
+qreal OptionMenu::get_sound_volume () {
+    return soundVolume;
+}
 
 /*
  * SLOTS
  */
 
-void OptionMenu::display_remove_confirmation () {
+void OptionMenu::change_sound_volume (int value) {
+    soundVolume = QAudio::convertVolume(value / (qreal)100.0,
+                                        QAudio::VolumeScale::LinearVolumeScale,
+                                        QAudio::VolumeScale::LogarithmicVolumeScale
+                                        );
+    displaySoundValue->setText( QString::number(value) + "%");
+    emit signal_sound_volume_changed ();
+}
 
-    if (QFile::exists ("score.csv")) {  //file exists so remove it
+void OptionMenu::display_remove_confirmation () {   //display infoBoxes when user want to remove scoreboards
+    if (QFile::exists ("scores.csv")) {  //file exists so remove it
         QMessageBox mess (QMessageBox::Icon::Warning,
-                          "Attention", "Are you sure ? This will remove all saved scores",
+                          "Attention", "Are you sure ? This will remove all saved scores !",
                           QMessageBox::StandardButton::Cancel |
                           QMessageBox::StandardButton::Yes , this);
         int res = mess.exec();
@@ -54,7 +104,7 @@ void OptionMenu::display_remove_confirmation () {
     }
     else {  //file does not exist
         QMessageBox mess (QMessageBox::Icon::Information,
-                          "Info", "There is no scoreboard file",
+                          "Info", "Saved scores already empty",
                           QMessageBox::StandardButton::Ok , this);
         mess.exec();
     }
