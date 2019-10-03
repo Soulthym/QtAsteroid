@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include <QLabel>
 #include <QPushButton>
 
@@ -36,7 +36,7 @@ private:
     ScoreBoardMenu *scoreboardMenu;
 
     //Main menu display elements
-    QVBoxLayout *choicesLayout;
+    QGridLayout *choicesLayout;
     QPushButton *quitButton;
     QPushButton *startButton;
     QPushButton *scoreboardButton;
