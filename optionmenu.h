@@ -26,7 +26,10 @@ public slots:
 
 private :
     QGridLayout *optionMenu;
+    QLabel *optionMenuTitle;
+
     QComboBox *difficulty;
+    QLabel *diffLabel;
 
     QLabel *displaySoundValue;
     QSlider *soundSlider;

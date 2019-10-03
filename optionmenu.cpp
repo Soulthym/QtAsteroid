@@ -14,29 +14,47 @@ OptionMenu::OptionMenu(QWidget *parent) : QWidget(parent)
 
     retourMainMenu = new QPushButton ("Return");
     resetScoreboard = new QPushButton ("Reset scoreboard");
+
     soundSlider = new QSlider;
+
+    optionMenuTitle = new QLabel("Options");
     displaySoundValue = new QLabel;
+    diffLabel = new QLabel("Difficulties");
+
+    optionMenuTitle->setAlignment(Qt::AlignCenter);
+    QFont font = optionMenuTitle->font();
+    font.setPointSize(60);
+    font.setBold(true);
+    optionMenuTitle->setFont(font);
 
     //set difficulty choice
     const QStringList diffChoices = {"Easy", "Normal", "Difficult"};
     difficulty->addItems(diffChoices);
     difficulty->setCurrentIndex(1);
+    diffLabel->setAlignment(Qt::AlignCenter);
 
     //sound slider setup
     soundSlider->setOrientation(Qt::Orientation::Horizontal);
     soundSlider->setRange(0, 100);
-    soundSlider->setValue( (int)soundVolume * 100);
-    displaySoundValue->setText( QString::number((int)soundVolume * 100) + "%");
+    soundSlider->setValue( (int)(soundVolume * 100.0));
+    displaySoundValue->setText( QString::number((int)(soundVolume * 100.0)) + "%");
     displaySoundValue->setAlignment(Qt::AlignCenter);
 
     connect (soundSlider, &QSlider::valueChanged, this, &OptionMenu::change_sound_volume);
 
     //set grid layout
-    optionMenu->addWidget(difficulty, 0, 0, 1, 3);
-    optionMenu->addWidget(resetScoreboard, 1, 1, 1, 1);
-    optionMenu->addWidget(displaySoundValue, 2, 0, 1, 1);
-    optionMenu->addWidget(soundSlider, 2, 1, 1, 2);
-    optionMenu->addWidget(retourMainMenu, 3, 2, 1, 1);
+    for(int i=0; i<3; i++) {
+        optionMenu->setColumnStretch(i, 1);
+        optionMenu->setRowStretch(i, 1);
+    }
+
+    optionMenu->addWidget(optionMenuTitle, 0, 0, 1, 3);
+    optionMenu->addWidget(diffLabel, 1, 0, 1, 1);
+    optionMenu->addWidget(difficulty, 1, 1, 1, 2);
+    optionMenu->addWidget(resetScoreboard, 2, 1, 1, 1);
+    optionMenu->addWidget(displaySoundValue, 3, 0, 1, 1);
+    optionMenu->addWidget(soundSlider, 3, 1, 1, 2);
+    optionMenu->addWidget(retourMainMenu, 5, 2, 1, 1);
 
     connect (resetScoreboard, &QPushButton::pressed, this, &OptionMenu::display_remove_confirmation);
 }
