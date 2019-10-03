@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QHeaderView>
+#include <QPushButton>
 
 class ScoreBoardMenu : public QWidget
 {
@@ -24,9 +25,10 @@ public slots:
 
 private:
     QVBoxLayout *topLayout;
-    QHBoxLayout *subLayout;
+    QHBoxLayout *buttonPanel;
     QTableWidget *table;
-
+    QPushButton *exitButton;
+    QPushButton *clearButton;
 
 };
 

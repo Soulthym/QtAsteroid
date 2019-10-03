@@ -1,17 +1,25 @@
 #include "scoreboardmenu.h"
 
-ScoreBoardMenu::ScoreBoardMenu(QWidget *parent) : QWidget(parent)
-{
+ScoreBoardMenu::ScoreBoardMenu(QWidget *parent) : QWidget(parent) {
     topLayout = new QVBoxLayout();
-    subLayout = new QHBoxLayout();
+    buttonPanel = new QHBoxLayout();
 
-    this->setLayout(topLayout);
-    topLayout->addLayout(subLayout);
+    setLayout(topLayout);
 
     table = new QTableWidget();
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    subLayout->addWidget(table);
-    this->loadCsv("./scores.csv", table);
+    topLayout->addWidget(table);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->setShowGrid(false);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
+    loadCsv("./scores.csv", table);
+
+    exitButton = new QPushButton("Back to Menu");
+    clearButton = new QPushButton("Clear ScoreBoard");
+    topLayout->addLayout(buttonPanel);
+    buttonPanel->addWidget(exitButton);
+    buttonPanel->addWidget(clearButton);
 }
 
 void ScoreBoardMenu::loadCsv(const QString filename, QTableWidget *table) {
@@ -36,4 +44,8 @@ void ScoreBoardMenu::loadCsv(const QString filename, QTableWidget *table) {
         inputFile.close();
     }
     table->setHorizontalHeaderLabels({"Player","Score"});
+}
+
+ScoreBoardMenu::backToMenu(const QOject *receiver, const char *slotMemberFunction) {
+	connect(exitButton, SIGNAL(clicked)(), receiver, slotMemberFunction);
 }
