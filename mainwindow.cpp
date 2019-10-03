@@ -79,6 +79,7 @@ void MainWindow::display_option_menu() {
 void MainWindow::display_scoreboard_menu() {
     mainMenu = takeCentralWidget();
     setCentralWidget(scoreboardMenu);
+    scoreboardMenu->reloadCsv();
 }
 
 void MainWindow::option_return_to_main_menu () {
