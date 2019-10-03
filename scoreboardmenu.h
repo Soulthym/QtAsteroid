@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QDebug>
+#include <QHeaderView>
 
 class ScoreBoardMenu : public QWidget
 {
@@ -15,7 +16,7 @@ class ScoreBoardMenu : public QWidget
 public:
     explicit ScoreBoardMenu(QWidget *parent = nullptr);
 
-    void loadCsv(char *filename, QTableWidget *table);
+    void loadCsv(const QString filename, QTableWidget *table);
 
 signals:
 
