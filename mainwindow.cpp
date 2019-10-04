@@ -58,9 +58,10 @@ void MainWindow::link_events (){    //button event linking
  */
 
 void MainWindow::start_game() {
-    mainMenu = takeCentralWidget();
-    setCentralWidget(mainGame);
+    //mainMenu = takeCentralWidget();
+    //setCentralWidget(mainGame);
     mainGame->setFocus();
+	mainGame->show();
 }
 
 void MainWindow::display_option_menu() {
