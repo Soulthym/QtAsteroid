@@ -3,30 +3,35 @@
 
 #include <QtWidgets>
 
+#include "projectile.h"
+
 class PlayerShip : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  explicit PlayerShip();
+    public:
+        explicit PlayerShip();
 
-  qreal angle();
-  void setAngle(const qreal& angle);
-  qreal rotate(const qreal& angle);
+        qreal angle();
+        void setAngle(const qreal& angle);
+        qreal rotate(const qreal& angle);
 
-  void draw(QPainter* painter, const QRect& frame);
-  void animate(const qreal& t, const qreal& dt, const QSet<int>& pressedKeys);
+        void draw(QPainter* painter, const QRect& frame);
+        void animate(const qreal& t, const qreal& dt, const QSet<int>& pressedKeys);
 
-signals:
+        void shoot();
 
-public slots:
+    signals:
+        void newProjectile(Projectile*);
 
-protected:
+    public slots:
 
-private:
-  qreal _angle;
-  QPointF _pos;
-  QPointF _velocity;
+    protected:
+
+    private:
+            qreal _angle;
+            QPointF _pos;
+            QPointF _velocity;
 };
 
 #endif // PLAYERSHIP_H
