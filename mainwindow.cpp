@@ -58,11 +58,10 @@ void MainWindow::link_events (){    //button event linking
  */
 
 void MainWindow::start_game() {
-  //mainMenu = takeCentralWidget();
-  //setCentralWidget(mainGame);
-  mainGame->setAttribute(Qt::WA_X11NetWmWindowTypeDialog, true); // dialog aka floating
-  mainGame->setFocus();
-  mainGame->show();
+    //mainMenu = takeCentralWidget();
+    //setCentralWidget(mainGame);
+    mainGame->setFocus();
+	mainGame->show();
 }
 
 void MainWindow::display_option_menu() {
