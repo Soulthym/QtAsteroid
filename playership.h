@@ -2,6 +2,7 @@
 #define PLAYERSHIP_H
 
 #include <QtWidgets>
+#include "projectiles.h"
 
 class PlayerShip : public QObject
 {
@@ -16,8 +17,10 @@ public:
     void draw(QPainter* painter, const QRect& frame);
     void animate(const qreal& t, const qreal& dt, const QSet<int>& pressedKeys);
     const QPolygonF get_player_polygon ();
+    void shoot();
 
 signals:
+    void newProjectile(Projectile*);
 
 public slots:
 

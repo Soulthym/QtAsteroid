@@ -6,6 +6,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     optionmenu.cpp \
+    projectiles.cpp \
     scoreboardmenu.cpp \
     playership.cpp \
     score.cpp
@@ -15,6 +16,7 @@ HEADERS += \
     asteroid.h \
     mainwindow.h \
     optionmenu.h \
+    projectiles.h \
     scoreboardmenu.h \
     playership.h \
     score.h

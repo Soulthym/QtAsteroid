@@ -1,11 +1,12 @@
 #include "asteroid.h"
 
-Asteroid::Asteroid (AsteroidSizes _size, qreal maxSpeed, QObject *parent) : QObject(parent)  {
+Asteroid::Asteroid (AsteroidSizes _size, QPointF initialPos, qreal _maxSpeed, QObject *parent) : QObject(parent)  {
     size = _size;
-    pos = QPointF (0.0, 0.0);
+    pos = initialPos;
+    maxSpeed = _maxSpeed;
     velocity = QPointF (
-                (QRandomGenerator::global()->bounded(maxSpeed*2) - maxSpeed),
-                (QRandomGenerator::global()->bounded(maxSpeed*2) - maxSpeed)
+                (QRandomGenerator::global()->bounded(maxSpeed*2.0) - maxSpeed),
+                (QRandomGenerator::global()->bounded(maxSpeed*2.0) - maxSpeed)
                 );
 
     switch (_size) {
@@ -76,17 +77,23 @@ bool Asteroid::is_intersecting (const QPolygonF toTest) {
     return toTest.intersects(trans.map(shape));
 }
 
+bool Asteroid::is_intersecting (const QPointF toTest) {
+    QTransform trans;
+    trans.translate(pos.rx(), pos.ry());
+    return trans.map(shape).containsPoint(toTest, Qt::FillRule::OddEvenFill);
+}
+
 QPair<Asteroid*, Asteroid*> * Asteroid::destroy () {
     //animation destruction
     deleteLater();
 
-    if (size == SMALL) {
-        return new QPair<Asteroid*, Asteroid*> (nullptr, nullptr);
-    }
+    if (size == SMALL)
+        return nullptr;
+
     AsteroidSizes newSize = get_next_size (size);
     return new QPair <Asteroid*, Asteroid*> (
-                new Asteroid (newSize, maxSpeed * 2.0),
-                new Asteroid (newSize, maxSpeed * 2.0)
+                new Asteroid (newSize, pos, maxSpeed * 2.0),
+                new Asteroid (newSize, pos, maxSpeed * 2.0)
                 );
 };
 

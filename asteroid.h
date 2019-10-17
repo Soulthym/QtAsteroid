@@ -19,10 +19,13 @@ class Asteroid : public QObject
 {
     Q_OBJECT
 public:
-    explicit Asteroid (AsteroidSizes size, qreal maxSpeed, QObject *parent = nullptr);
+    explicit Asteroid (AsteroidSizes size, QPointF initialPos, qreal maxSpeed, QObject *parent = nullptr);
     void draw (QPainter* painter);
     void animate (const qreal& dt);
+
     bool is_intersecting (QPolygonF toTest);
+    bool is_intersecting (QPointF toTest);
+
     QPair<Asteroid*, Asteroid*> * destroy ();
 
 signals:

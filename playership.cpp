@@ -77,3 +77,8 @@ const QPolygonF PlayerShip::get_player_polygon () {
     trans.translate(pos.rx(), pos.ry());
     return trans.map(shape);
 }
+
+void PlayerShip::shoot() {
+    Projectile* projectile = new Projectile(pos, angle);
+    emit newProjectile(projectile);
+}

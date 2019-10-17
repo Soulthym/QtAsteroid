@@ -6,6 +6,7 @@
 #include "playership.h"
 #include "score.h"
 #include "asteroid.h"
+#include "projectiles.h"
 
 class AsteroidGame : public QWidget
 {
@@ -18,6 +19,8 @@ signals:
 
 public slots:
     void refresh();
+    void newProjectile(Projectile*);
+    void projectileDestroyed();
 
 protected:
     void paintEvent(QPaintEvent*) override;
@@ -28,8 +31,9 @@ protected:
     void collisions ();
 
 private:
+    QSet<Projectile*> projectiles;
     QSet <Asteroid*> asteroidSet;
-    PlayerShip playerShip;
+    PlayerShip *playerShip;
     QTimer* refreshTimer;
     QElapsedTimer absoluteTime;
     QElapsedTimer interframeTime;
