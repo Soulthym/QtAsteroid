@@ -9,11 +9,11 @@ class Score : public QObject
 public:
     explicit Score();
     void draw(QPainter* painter, const QRect& frame);
-    void add(unsigned int value);
 
 signals:
 
 public slots:
+    void add(unsigned int value);
 
 protected:
 
