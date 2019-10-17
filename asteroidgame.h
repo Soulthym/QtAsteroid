@@ -4,6 +4,7 @@
 #include <QtWidgets>
 
 #include "playership.h"
+#include "score.h"
 
 class AsteroidGame : public QWidget
 {
@@ -28,7 +29,7 @@ private:
   QTimer* refreshTimer;
   QElapsedTimer absoluteTime;
   QElapsedTimer interframeTime;
-
+  Score score;
   QSet<int> pressedKeys;
 };
 
