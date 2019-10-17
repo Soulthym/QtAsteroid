@@ -93,12 +93,12 @@ void OptionMenu::display_remove_confirmation () {   //display infoBoxes when use
                           QMessageBox::StandardButton::Yes , this);
         int res = mess.exec();
         switch (res) {
-            case QMessageBox::Yes :
-            case QMessageBox::Ok :
-                QFile::remove("scores.csv");
+        case QMessageBox::Yes :
+        case QMessageBox::Ok :
+            QFile::remove("scores.csv");
             break;
 
-            default :
+        default :
             break;
         }
     }

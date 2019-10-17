@@ -9,32 +9,32 @@
 
 class AsteroidGame : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit AsteroidGame(QWidget* parent = nullptr);
+    explicit AsteroidGame(QWidget* parent = nullptr);
 
 signals:
 
 public slots:
-  void refresh();
+    void refresh();
 
 protected:
-  void paintEvent(QPaintEvent*) override;
-  void keyPressEvent(QKeyEvent*) override;
-  void keyReleaseEvent(QKeyEvent*) override;
-  void resizeEvent(QResizeEvent*) override;
+    void paintEvent(QPaintEvent*) override;
+    void keyPressEvent(QKeyEvent*) override;
+    void keyReleaseEvent(QKeyEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
-  void collisions ();
+    void collisions ();
 
 private:
-  QSet <Asteroid*> asteroidSet;
-  PlayerShip playerShip;
-  QTimer* refreshTimer;
-  QElapsedTimer absoluteTime;
-  QElapsedTimer interframeTime;
-  Score score;
-  QSet<int> pressedKeys;
+    QSet <Asteroid*> asteroidSet;
+    PlayerShip playerShip;
+    QTimer* refreshTimer;
+    QElapsedTimer absoluteTime;
+    QElapsedTimer interframeTime;
+    Score score;
+    QSet<int> pressedKeys;
 };
 
 #endif // ASTEROIDGAME_H
