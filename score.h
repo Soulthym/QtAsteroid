@@ -1,0 +1,24 @@
+#ifndef SCORE_H
+#define SCORE_H
+
+#include <QtWidgets>
+
+class Score : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Score();
+    void draw(QPainter* painter, const QRect& frame);
+    void add(unsigned int value);
+
+signals:
+
+public slots:
+
+protected:
+
+private:
+    unsigned int _score;
+};
+
+#endif // SCORE_H
