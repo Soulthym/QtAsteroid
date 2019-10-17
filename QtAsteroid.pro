@@ -6,11 +6,13 @@ SOURCES += \
     mainwindow.cpp \
     optionmenu.cpp \
     scoreboardmenu.cpp \
-    playership.cpp
+    playership.cpp \
+    score.cpp
 
 HEADERS += \
     asteroidgame.h \
     mainwindow.h \
     optionmenu.h \
     scoreboardmenu.h \
-    playership.h
+    playership.h \
+    score.h
