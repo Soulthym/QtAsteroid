@@ -47,6 +47,7 @@ void AsteroidGame::paintEvent(QPaintEvent* event) {
   painter.translate(QPointF(1.0, 1.0));
 
   playerShip.draw(&painter, frame);
+  score.draw(&painter, frame);
 }
 
 void AsteroidGame::keyPressEvent(QKeyEvent* event) {
