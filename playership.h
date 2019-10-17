@@ -10,12 +10,12 @@ class PlayerShip : public QObject
 public:
   explicit PlayerShip();
 
-  qreal angle();
   void setAngle(const qreal& angle);
   qreal rotate(const qreal& angle);
 
   void draw(QPainter* painter, const QRect& frame);
   void animate(const qreal& t, const qreal& dt, const QSet<int>& pressedKeys);
+  const QPolygonF get_player_polygon ();
 
 signals:
 
@@ -24,9 +24,10 @@ public slots:
 protected:
 
 private:
-  qreal _angle;
-  QPointF _pos;
-  QPointF _velocity;
+  qreal angle;
+  QPointF pos;
+  QPointF velocity;
+  QPolygonF shape;
 };
 
 #endif // PLAYERSHIP_H

@@ -5,6 +5,7 @@
 
 #include "playership.h"
 #include "score.h"
+#include "asteroid.h"
 
 class AsteroidGame : public QWidget
 {
@@ -24,7 +25,10 @@ protected:
   void keyReleaseEvent(QKeyEvent*) override;
   void resizeEvent(QResizeEvent*) override;
 
+  void collisions ();
+
 private:
+  QSet <Asteroid*> asteroidSet;
   PlayerShip playerShip;
   QTimer* refreshTimer;
   QElapsedTimer absoluteTime;

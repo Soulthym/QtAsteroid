@@ -7,6 +7,11 @@ AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
   refreshTimer->setSingleShot(false);
   refreshTimer->start(1000 / 60); // 1/60s
 
+    //instantiate asteroids
+    for (int i=0; i<5; i++) {
+        asteroidSet << new Asteroid (BIG, 0.06);
+    }
+
   // start chronometers
   absoluteTime.start();
   interframeTime.start();
@@ -17,6 +22,10 @@ void AsteroidGame::refresh() {
   const qreal dt = interframeTime.nsecsElapsed() * 1e-9; interframeTime.restart();
 
   playerShip.animate(t, dt, pressedKeys);
+
+  foreach (Asteroid* ast, asteroidSet) {
+    ast->animate(dt);
+  }
 
   // trigger redraw
   update();
@@ -43,11 +52,24 @@ void AsteroidGame::paintEvent(QPaintEvent* event) {
   QRect frame = this->rect(); // widget's inner geometry
 	painter.fillRect(frame, bgColor); // draw background
 
-  painter.scale((qreal)frame.width() / 2.0, (qreal)frame.height() / 2.0);
+  painter.scale(qreal (frame.width()) / 2.0, qreal(frame.height()) / 2.0);
   painter.translate(QPointF(1.0, 1.0));
 
   playerShip.draw(&painter, frame);
   score.draw(&painter, frame);
+
+  foreach (Asteroid* ast, asteroidSet) {
+    ast->draw(&painter);
+  }
+  collisions ();
+}
+
+void AsteroidGame::collisions () {
+    foreach (Asteroid* ast, asteroidSet) {
+      if (ast->is_intersecting(playerShip.get_player_polygon()))
+          score.add(1);
+    }
+
 }
 
 void AsteroidGame::keyPressEvent(QKeyEvent* event) {

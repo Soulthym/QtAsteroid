@@ -71,7 +71,9 @@ AsteroidSizes get_next_size (AsteroidSizes size) {
 }
 
 bool Asteroid::is_intersecting (const QPolygonF toTest) {
-    return shape.intersects(toTest);
+    QTransform trans;
+    trans.translate(pos.rx(), pos.ry());
+    return toTest.intersects(trans.map(shape));
 }
 
 QPair<Asteroid*, Asteroid*> * Asteroid::destroy () {
