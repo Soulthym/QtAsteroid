@@ -1,3 +1,5 @@
+#ifndef SCOREBOARD_H
+#define SCOREBOARD_H
 #include "scoreboardmenu.h"
 
 ScoreBoardMenu::ScoreBoardMenu(QWidget *parent) : QWidget(parent) {
@@ -61,3 +63,4 @@ void ScoreBoardMenu::clearCsv() {
     csvFile.remove();
     reloadCsv();
 }
+#endif // SCOREBOARD_H
