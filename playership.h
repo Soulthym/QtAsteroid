@@ -2,36 +2,35 @@
 #define PLAYERSHIP_H
 
 #include <QtWidgets>
-
-#include "projectile.h"
+#include "projectiles.h"
 
 class PlayerShip : public QObject
 {
     Q_OBJECT
 
-    public:
-        explicit PlayerShip();
+public:
+    explicit PlayerShip();
 
-        qreal angle();
-        void setAngle(const qreal& angle);
-        qreal rotate(const qreal& angle);
+    void setAngle(const qreal& angle);
+    qreal rotate(const qreal& angle);
 
-        void draw(QPainter* painter, const QRect& frame);
-        void animate(const qreal& t, const qreal& dt, const QSet<int>& pressedKeys);
+    void draw(QPainter* painter, const QRect& frame);
+    void animate(const qreal& t, const qreal& dt, const QSet<int>& pressedKeys);
+    const QPolygonF get_player_polygon ();
+    void shoot();
 
-        void shoot();
+signals:
+    void newProjectile(Projectile*);
 
-    signals:
-        void newProjectile(Projectile*);
+public slots:
 
-    public slots:
+protected:
 
-    protected:
-
-    private:
-            qreal _angle;
-            QPointF _pos;
-            QPointF _velocity;
+private:
+    qreal angle;
+    QPointF pos;
+    QPointF velocity;
+    QPolygonF shape;
 };
 
 #endif // PLAYERSHIP_H

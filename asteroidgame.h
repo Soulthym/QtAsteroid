@@ -6,40 +6,39 @@
 #include "playership.h"
 #include "score.h"
 #include "asteroid.h"
-
-#include "projectile.h"
+#include "projectiles.h"
 
 class AsteroidGame : public QWidget
 {
     Q_OBJECT
 
-    public:
-        explicit AsteroidGame(QWidget* parent = nullptr);
+public:
+    explicit AsteroidGame(QWidget* parent = nullptr);
 
-    signals:
+signals:
 
-    public slots:
-        void refresh();
-        void newProjectile(Projectile*);
-        void projectileDestroyed();
+public slots:
+    void refresh();
+    void newProjectile(Projectile*);
+    void projectileDestroyed();
 
-    protected:
-        void paintEvent(QPaintEvent*) override;
-        void keyPressEvent(QKeyEvent*) override;
-        void keyReleaseEvent(QKeyEvent*) override;
-        void resizeEvent(QResizeEvent*) override;
+protected:
+    void paintEvent(QPaintEvent*) override;
+    void keyPressEvent(QKeyEvent*) override;
+    void keyReleaseEvent(QKeyEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
-    private:
-        QTimer* refreshTimer;
-        QElapsedTimer absoluteTime;
-        QElapsedTimer interframeTime;
+    void collisions ();
 
-	QSet<int> pressedKeys;
-
-	Score score;
-
-	PlayerShip* playerShip;
-	QSet<Projectile*> projectiles;
+private:
+    QSet<Projectile*> projectiles;
+    QSet <Asteroid*> asteroidSet;
+    PlayerShip *playerShip;
+    QTimer* refreshTimer;
+    QElapsedTimer absoluteTime;
+    QElapsedTimer interframeTime;
+    Score score;
+    QSet<int> pressedKeys;
 };
 
 #endif // ASTEROIDGAME_H

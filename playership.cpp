@@ -1,38 +1,34 @@
 #include "playership.h"
 
 PlayerShip::PlayerShip() {
-    _angle = 0.0;
-    _pos = QPointF(0.0, 0.0);
-    _velocity = QPointF(0.0, 0.0);
+    angle = 0.0;
+    pos = QPointF(0.0, 0.0);
+    velocity = QPointF(0.0, 0.0);
+
+    // draw shape
+    shape = QPolygonF()
+            << QPointF( 0.0, -0.04)
+            << QPointF( 0.02,  0.02)
+            << QPointF( 0.0,  0.0)
+            << QPointF( -0.02,  0.02)
+            << QPointF( 0.0, -0.04);
 }
 
-qreal PlayerShip::angle() {
-    return _angle;
+void PlayerShip::setAngle(const qreal& _angle) {
+    angle = _angle;
 }
 
-void PlayerShip::setAngle(const qreal& angle) {
-    _angle = angle;
-}
-
-qreal PlayerShip::rotate(const qreal& angle) {
-    _angle += angle;
-    return _angle;
+qreal PlayerShip::rotate(const qreal& _angle) {
+    angle += _angle;
+    return angle;
 }
 
 void PlayerShip::draw(QPainter* painter, const QRect& frame) {
     painter->save();
 
-    painter->translate(_pos);
-    painter->rotate(_angle);
-    painter->scale(0.02, 0.02);
+    painter->translate(pos);
+    painter->rotate(angle);
 
-    // draw shape
-    static const QPolygonF shape = QPolygonF()
-        << QPoint( 0.0, -2.0)
-        << QPoint( 1.0,  1.0)
-        << QPoint( 0.0,  0.0)
-        << QPoint(-1.0,  1.0)
-        << QPoint( 0.0, -2.0);
     painter->drawPolyline(shape);
 
     painter->restore();
@@ -42,40 +38,47 @@ void PlayerShip::animate(const qreal& t, const qreal& dt, const QSet<int>& press
     QTransform rotation;
 
     if (pressedKeys.contains(Qt::Key_Left)) {
-        _angle -= 80.0 * dt;
+        angle -= 80.0 * dt;
     }
 
     if (pressedKeys.contains(Qt::Key_Right)) {
-        _angle += 80.0 * dt;
+        angle += 80.0 * dt;
     }
 
-    rotation.rotate(_angle);
+    rotation.rotate(angle);
 
     if (pressedKeys.contains(Qt::Key_Up)) {
-        _velocity += rotation.map(QPointF(0.0, -1.0)) * dt;
+        velocity += rotation.map(QPointF(0.0, -1.0)) * dt;
     }
 
     // move forward
-    _pos += _velocity * dt;
+    pos += velocity * dt;
 
     // fade speed
-    _velocity = _velocity * std::min(dt * 100, 0.99);
+    velocity *= std::min(dt * 100, 0.99);
 
     // handle warps
-    if (_pos.rx() < -1.0)
-        _pos.rx() += 2.0;
+    if (pos.rx() < -1.0)
+        pos.rx() += 2.0;
 
-    if (_pos.rx() > 1.0)
-        _pos.rx() -= 2.0;
+    if (pos.rx() > 1.0)
+        pos.rx() -= 2.0;
 
-    if (_pos.ry() < -1.0)
-        _pos.ry() += 2.0;
+    if (pos.ry() < -1.0)
+        pos.ry() += 2.0;
 
-    if (_pos.ry() > 1.0)
-        _pos.ry() -= 2.0;
+    if (pos.ry() > 1.0)
+        pos.ry() -= 2.0;
+}
+
+
+const QPolygonF PlayerShip::get_player_polygon () {
+    QTransform trans;
+    trans.translate(pos.rx(), pos.ry());
+    return trans.map(shape);
 }
 
 void PlayerShip::shoot() {
-    Projectile* projectile = new Projectile(_pos, _angle);
+    Projectile* projectile = new Projectile(pos, angle);
     emit newProjectile(projectile);
 }
