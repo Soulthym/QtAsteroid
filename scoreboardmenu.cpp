@@ -63,4 +63,13 @@ void ScoreBoardMenu::clearCsv() {
     csvFile.remove();
     reloadCsv();
 }
+
+void ScoreBoardMenu::addScore(QString name, unsigned int score) {
+    QFile csvFile(scoreFilename);
+    if (csvFile.open(QIODevice::Append)) {
+        QTextStream stream(&csvFile);
+        stream << name << ',' << score << endl;
+    }
+}
+
 #endif // SCOREBOARD_H
