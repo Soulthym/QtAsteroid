@@ -2,6 +2,7 @@
 #define ASTEROIDGAME_H
 
 #include <QtWidgets>
+#include <QtMultimedia/QSound>
 
 #include "playership.h"
 #include "score.h"
