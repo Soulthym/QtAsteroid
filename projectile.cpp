@@ -1,5 +1,13 @@
 #include "projectile.h"
 
+const QPointF Projectile::get_shape () {
+    return pos;
+}
+
+void Projectile::destroy () {
+    deleteLater();
+}
+
 Projectile::Projectile(QPointF initPos, qreal angle) {
     pos = initPos;
 

@@ -9,9 +9,10 @@ class Projectile : public QObject
 
     public:
         explicit Projectile(QPointF initPos, qreal angle);
-
+        const QPointF get_shape ();
         void draw(QPainter* painter, const QRect& frame);
         void animate(const qreal& t, const qreal& dt, const QSet<int>& pressedKeys);
+        void destroy ();
 
     private:
         QPointF pos;

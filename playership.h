@@ -2,7 +2,7 @@
 #define PLAYERSHIP_H
 
 #include <QtWidgets>
-#include "projectiles.h"
+#include "projectile.h"
 
 class PlayerShip : public QObject
 {

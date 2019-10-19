@@ -6,7 +6,7 @@
 #include "playership.h"
 #include "score.h"
 #include "asteroid.h"
-#include "projectiles.h"
+#include "projectile.h"
 
 class AsteroidGame : public QWidget
 {

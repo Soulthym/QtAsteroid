@@ -39,16 +39,6 @@ void AsteroidGame::refresh() {
     update();
 }
 
-void AsteroidGame::newProjectile(Projectile* projectile) {
-    projectiles.insert(projectile);
-    connect(projectile, SIGNAL(destroyed()), this, SLOT(projectileDestroyed()));
-}
-
-void AsteroidGame::projectileDestroyed() {
-    Projectile* caller = (Projectile*) QObject::sender();
-    projectiles.remove(caller);
-}
-
 void AsteroidGame::paintEvent(QPaintEvent* event) {
     const QColor bgColor(Qt::black);
     const QColor fgColor(Qt::white);
