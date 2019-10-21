@@ -18,6 +18,7 @@ public:
     void animate(const qreal& t, const qreal& dt, const QSet<int>& pressedKeys);
     const QPolygonF get_player_polygon ();
     void shoot();
+    void reset();
 
 signals:
     void newProjectile(Projectile*);

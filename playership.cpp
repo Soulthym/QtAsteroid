@@ -82,3 +82,16 @@ void PlayerShip::shoot() {
     Projectile* projectile = new Projectile(pos, angle);
     emit newProjectile(projectile);
 }
+void PlayerShip::reset() {
+    angle = 0.0;
+    pos = QPointF(0.0, 0.0);
+    velocity = QPointF(0.0, 0.0);
+
+    // draw shape
+    shape = QPolygonF()
+            << QPointF( 0.0, -0.04)
+            << QPointF( 0.02,  0.02)
+            << QPointF( 0.0,  0.0)
+            << QPointF( -0.02,  0.02)
+            << QPointF( 0.0, -0.04);
+}
