@@ -8,6 +8,7 @@ class Score : public QObject
     Q_OBJECT
 public:
     explicit Score();
+    void reset();
     void draw(QPainter* painter, const QRect& frame);
     unsigned int getScore();
 

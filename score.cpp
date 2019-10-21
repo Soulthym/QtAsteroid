@@ -22,3 +22,7 @@ void Score::add(unsigned int value) {
 unsigned int Score::getScore() {
     return _score;
 }
+
+void Score::reset() {
+    _score = 0;
+}
