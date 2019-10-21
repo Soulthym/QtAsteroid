@@ -2,14 +2,12 @@
 #define ASTEROIDGAME_H
 
 #include <QtWidgets>
-#include <QtMultimedia/QSound>
 #include <QtMultimedia/QSoundEffect>
 
 #include "playership.h"
 #include "score.h"
 #include "asteroid.h"
 #include "projectile.h"
-#include "scoreboardmenu.h"
 
 class AsteroidGame : public QWidget
 {
@@ -19,13 +17,11 @@ public:
     explicit AsteroidGame(QWidget* parent = nullptr);
 
 signals:
-    void scoreSaved(unsigned int score, QString text);
 
 public slots:
     void refresh();
     void newProjectile(Projectile*);
     void projectileDestroyed();
-    void accessScore(ScoreBoardMenu *scoreBoardMenu);
 
 protected:
     void paintEvent(QPaintEvent*) override;
@@ -45,9 +41,9 @@ private:
     QElapsedTimer interframeTime;
     Score score;
     QSet <int> pressedKeys;
-    ScoreBoardMenu *_scoreBoardMenu;
     QSoundEffect pew;
     QSoundEffect boum;
+    QString scoreFilename;
 };
 
 #endif // ASTEROIDGAME_H

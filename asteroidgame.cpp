@@ -22,6 +22,7 @@ AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
     connect(playerShip, SIGNAL(newProjectile(Projectile*)), this, SLOT(newProjectile(Projectile*)));
     pew.setSource(QUrl::fromLocalFile("./16bit-pew.wav"));
     boum.setSource(QUrl::fromLocalFile("./8bit-explosion-SFX.wav"));
+    scoreFilename = "./scores.csv";
 }
 
 void AsteroidGame::refresh() {
@@ -148,18 +149,10 @@ void AsteroidGame::resizeEvent(QResizeEvent* event) {
     QWidget::resize(sideSize, sideSize);
 }
 
-void AsteroidGame::accessScore(ScoreBoardMenu *scoreBoardMenu) {
-    _scoreBoardMenu = scoreBoardMenu;
-    connect(this, SIGNAL(scoreSaved(QObject*)), _scoreBoardMenu, SLOT(addScore(QString name,unsigned int score)));
-}
-
 void AsteroidGame::gameOver() {
-    bool ok;
-    QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
-                                         tr("User name:"), QLineEdit::Normal,
-                                         QDir::home().dirName(), &ok);
-    if (ok && !text.isEmpty())
-        std::cout << text.toStdString() << std::endl;
-    emit scoreSaved(score.getScore(), text);
-    //reset game
+    QFile csvFile(scoreFilename);
+    if (csvFile.open(QIODevice::Append)) {
+        QTextStream stream(&csvFile);
+        stream << QDir::home().dirName() << ',' << score << endl;
+    }
 }
