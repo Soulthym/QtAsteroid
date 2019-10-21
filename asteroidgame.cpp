@@ -6,11 +6,10 @@ AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
     QObject::connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
     refreshTimer->setSingleShot(false);
     refreshTimer->start(1000 / 60); // 1/60s
+    isPaused = true;
 
     //instantiate asteroids
-    for (int i=0; i<5; i++) {
-        asteroidSet << new Asteroid (BIG, QPointF (0.8, 0.7), 0.06);
-    }
+    spawn_asteroids (BIG, 5);
 
     // start chronometers
     absoluteTime.start();
@@ -24,9 +23,24 @@ AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
     scoreFilename="./scores.csv";
 }
 
+void AsteroidGame::spawn_asteroids (AsteroidSizes size, int number) {
+    for (int i=0; i<number; i++) {
+        qreal placement = QRandomGenerator::global()->bounded(0.95);
+        asteroidSet << new Asteroid (size,
+                                     QPointF(
+                                        placement * numberSet[QRandomGenerator::global()->bounded(2)],
+                                        (1.0-placement) * numberSet[QRandomGenerator::global()->bounded(2)]
+                                     ),
+                                     0.06);
+    }
+}
+
 void AsteroidGame::refresh() {
     const qreal t = absoluteTime.nsecsElapsed() * 1e-9;
     const qreal dt = interframeTime.nsecsElapsed() * 1e-9; interframeTime.restart();
+
+    if (isPaused)
+        return;
 
     playerShip->animate(t, dt, pressedKeys);
 
@@ -40,6 +54,11 @@ void AsteroidGame::refresh() {
 
     // trigger redraw
     update();
+}
+
+void AsteroidGame::sound_changed (qreal volume) {
+    pew.setVolume(volume);
+    boum.setVolume(volume);
 }
 
 void AsteroidGame::paintEvent(QPaintEvent* event) {
@@ -83,7 +102,6 @@ void AsteroidGame::newProjectile(Projectile* projectile) {
     projectiles.insert(projectile);
     connect(projectile, SIGNAL(destroyed()), this, SLOT(projectileDestroyed()));
     pew.play();
-    //QSound::play("16bit-pew.wav");
 }
 
 void AsteroidGame::projectileDestroyed() {
@@ -99,6 +117,7 @@ void AsteroidGame::collisions () {
     foreach (Asteroid* ast, asteroidSet) {
         if (ast->is_intersecting(playerShip->get_player_polygon())) {
             gameOver();
+            return;
         }
     }
 
@@ -134,6 +153,13 @@ void AsteroidGame::keyPressEvent(QKeyEvent* event) {
             playerShip->shoot();
             return;
     }
+    if (event->key() == Qt::Key_Escape) {
+        isPaused = !isPaused;
+        if (isPaused) {
+            //print menu
+
+        }
+    }
 }
 
 void AsteroidGame::keyReleaseEvent(QKeyEvent* event) {
@@ -157,11 +183,11 @@ void AsteroidGame::gameOver() {
     score.reset();
     projectiles.clear();
     asteroidSet.clear();
+    pressedKeys.clear();
     playerShip->reset();
-    //pause
-    for (int i=0; i<5; i++) {
-        asteroidSet << new Asteroid (BIG, QPointF (0.8, 0.7), 0.06);
-    }
+
+    isPaused = true;
+    spawn_asteroids (BIG, 5);
     emit backToMenu();
 }
 

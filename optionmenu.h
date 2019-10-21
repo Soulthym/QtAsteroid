@@ -18,7 +18,7 @@ public:
     qreal get_sound_volume ();  //return sound volume
 
 signals:
-    void signal_sound_volume_changed ();
+    void signal_sound_volume_changed (qreal newSoundVolume);
 
 public slots:
     void display_remove_confirmation ();

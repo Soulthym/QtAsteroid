@@ -16,6 +16,7 @@ class AsteroidGame : public QWidget
 public:
     explicit AsteroidGame(QWidget* parent = nullptr);
     void connectGameOver (const QObject *receiver, const char * slotMemberFunction );
+    bool isPaused;
 
 signals:
     void backToMenu();
@@ -24,17 +25,21 @@ public slots:
     void refresh();
     void newProjectile(Projectile*);
     void projectileDestroyed();
+    void sound_changed (qreal volume);
 
 protected:
     void paintEvent(QPaintEvent*) override;
     void keyPressEvent(QKeyEvent*) override;
     void keyReleaseEvent(QKeyEvent*) override;
     void resizeEvent(QResizeEvent*) override;
+    void spawn_asteroids (AsteroidSizes size, int number);
 
     void collisions ();
     void gameOver();
 
 private:
+    int numberSet[2] = {-1, 1};
+
     QSet <Projectile*> projectiles;
     QSet <Asteroid*> asteroidSet;
     PlayerShip *playerShip;

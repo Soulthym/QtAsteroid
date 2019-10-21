@@ -59,6 +59,8 @@ void MainWindow::link_events (){    //button event linking
     mainGame->connectGameOver(this, SLOT(game_return_to_main_menu()));
     optionMenu->connectReturnButton(this, SLOT(option_return_to_main_menu()) );
     scoreboardMenu->backToMenu(this, SLOT(scoreboard_return_to_main_menu()) );
+
+    connect (optionMenu, &OptionMenu::signal_sound_volume_changed, mainGame, &AsteroidGame::sound_changed);
 }
 
 
@@ -70,6 +72,7 @@ void MainWindow::start_game() {
     mainMenu = takeCentralWidget();
     setCentralWidget(mainGame);
     mainGame->setFocus();
+    mainGame->isPaused = false;
 }
 
 void MainWindow::display_option_menu() {

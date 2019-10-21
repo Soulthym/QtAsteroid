@@ -82,7 +82,7 @@ void OptionMenu::change_sound_volume (int value) {
                                         QAudio::VolumeScale::LogarithmicVolumeScale
                                         );
     displaySoundValue->setText( QString::number(value) + "%");
-    emit signal_sound_volume_changed ();
+    emit signal_sound_volume_changed (soundVolume);
 }
 
 void OptionMenu::display_remove_confirmation () {   //display infoBoxes when user want to remove scoreboards
