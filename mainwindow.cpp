@@ -9,8 +9,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     mainGame = new AsteroidGame (parent);
     optionMenu = new OptionMenu (parent);
     scoreboardMenu = new ScoreBoardMenu (parent);
-    mainGame->accessScore(scoreboardMenu);
-
     link_events ();
 
     setCentralWidget(mainMenu);
