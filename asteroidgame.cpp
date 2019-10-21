@@ -116,10 +116,7 @@ void AsteroidGame::projectileDestroyed() {
 }
 
 void AsteroidGame::collisions () {
-    QSet <Asteroid*> newAsteroids;
-    QSet <Asteroid*> delAsteroids;
-    QSet <Projectile*> toDestroy;
-
+    //Is player dead ?
     foreach (Asteroid* ast, asteroidSet) {
         if (ast->is_intersecting(playerShip->get_player_polygon())) {
             gameOver();
@@ -127,31 +124,28 @@ void AsteroidGame::collisions () {
         }
     }
 
+    //calculate destroyed asteroids
     foreach (Projectile* p, projectiles) {
         foreach (Asteroid* ast, asteroidSet) {
-            if (ast->is_intersecting (p->get_shape  ())) {
-                p->destroy();
+            //if (delAsteroids.contains(ast)) //asteroid does not exist anymore
+            //    continue;
+            if (ast->is_intersecting (p->get_shape  ())) {  //projectile intersects asteroid
                 boum.play();
-                //QSound::play("8bit-explosion-SFX.wav");
-                toDestroy << p;
                 score.add(1);
+
+                //divide asteroid ?
                 QPair<Asteroid*, Asteroid*> *res = ast->destroy();
                 if (res != nullptr and res->first != nullptr and res->second != nullptr) {
                     //divide asteroid
-                    newAsteroids << res->first << res->second;
+                    asteroidSet << res->first << res->second;
                 }
-                //destroy asteroid
-                delAsteroids << ast;
+
+                asteroidSet.remove(ast);
+                ast->deleteLater();
+                p->deleteLater();
             }
         }
     }
-
-
-    foreach (Asteroid *ast, newAsteroids)
-        asteroidSet.insert (ast);
-    foreach (Asteroid *ast, delAsteroids)
-        asteroidSet.remove (ast);
-    toDestroy.clear ();
 }
 
 void AsteroidGame::keyPressEvent(QKeyEvent* event) {

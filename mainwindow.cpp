@@ -62,6 +62,7 @@ void MainWindow::link_events (){    //button event linking
     scoreboardMenu->backToMenu(this, SLOT(scoreboard_return_to_main_menu()) );
 
     connect (optionMenu, &OptionMenu::signal_sound_volume_changed, mainGame, &AsteroidGame::sound_changed);
+    connect (optionMenu, &OptionMenu::difficulty_changed, mainGame, &AsteroidGame::change_difficulty);
 }
 
 
