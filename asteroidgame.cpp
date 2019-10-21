@@ -1,5 +1,4 @@
 #include "asteroidgame.h"
-#include <iostream>
 
 AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
     // set FPS timer
