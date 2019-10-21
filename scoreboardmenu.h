@@ -20,12 +20,12 @@ public:
     void reloadCsv();
     void loadCsv(const QString filename, QTableWidget *table);
     void backToMenu(const QObject *receiver, const char *slotMemberFunction);
-    void addScore(QString name, unsigned int score);
-
-signals:
 
 public slots:
     void clearCsv();
+    void addScore(QString name, unsigned int score);
+    
+signals:
 
 private:
     QString scoreFilename;

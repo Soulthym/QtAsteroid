@@ -18,3 +18,7 @@ void Score::draw(QPainter* painter, const QRect& frame) {
 void Score::add(unsigned int value) {
     _score += value;
 }
+
+unsigned int Score::getScore() {
+    return _score;
+}
