@@ -155,6 +155,7 @@ void AsteroidGame::gameOver() {
         stream << QDir::home().dirName() << ',' << score.getScore() << endl;
     }
     score.reset();
+    projectiles.clear();
     asteroidSet.clear();
     playerShip->reset();
     //pause
