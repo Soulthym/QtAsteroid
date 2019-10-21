@@ -1,5 +1,3 @@
-#ifndef SCOREBOARD_H
-#define SCOREBOARD_H
 #include "scoreboardmenu.h"
 
 ScoreBoardMenu::ScoreBoardMenu(QWidget *parent) : QWidget(parent) {
@@ -64,12 +62,3 @@ void ScoreBoardMenu::clearCsv() {
     reloadCsv();
 }
 
-void ScoreBoardMenu::addScore(QString name, unsigned int score) {
-    QFile csvFile(scoreFilename);
-    if (csvFile.open(QIODevice::Append)) {
-        QTextStream stream(&csvFile);
-        stream << name << ',' << score << endl;
-    }
-}
-
-#endif // SCOREBOARD_H

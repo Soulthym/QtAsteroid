@@ -23,7 +23,6 @@ public:
 
 public slots:
     void clearCsv();
-    void addScore(QString name, unsigned int score);
     
 signals:
 
