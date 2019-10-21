@@ -153,6 +153,6 @@ void AsteroidGame::gameOver() {
     QFile csvFile(scoreFilename);
     if (csvFile.open(QIODevice::Append)) {
         QTextStream stream(&csvFile);
-        stream << QDir::home().dirName() << ',' << score << endl;
+        stream << QDir::home().dirName() << ',' << score.getScore() << endl;
     }
 }
