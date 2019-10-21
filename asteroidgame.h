@@ -15,8 +15,10 @@ class AsteroidGame : public QWidget
 
 public:
     explicit AsteroidGame(QWidget* parent = nullptr);
+    void connectGameOver (const QObject *receiver, const char * slotMemberFunction );
 
 signals:
+    void backToMenu();
 
 public slots:
     void refresh();

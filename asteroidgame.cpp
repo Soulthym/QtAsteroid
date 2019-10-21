@@ -155,4 +155,17 @@ void AsteroidGame::gameOver() {
         QTextStream stream(&csvFile);
         stream << QDir::home().dirName() << ',' << score.getScore() << endl;
     }
+    score.reset();
+    asteroidSet.clear();
+    playerShip->reset();
+    //pause
+    for (int i=0; i<5; i++) {
+        asteroidSet << new Asteroid (BIG, QPointF (0.8, 0.7), 0.06);
+    }
+    emit backToMenu();
+}
+
+void AsteroidGame::connectGameOver (const QObject *receiver, const char * slotMemberFunction ) {
+    //called by MainWindow to return when Game is Over
+    connect (this, SIGNAL(backToMenu()), receiver, slotMemberFunction);
 }
