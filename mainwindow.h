@@ -24,6 +24,7 @@ private slots:
 
     void option_return_to_main_menu ();
     void scoreboard_return_to_main_menu ();
+    void game_return_to_main_menu();
 
 signals :
 

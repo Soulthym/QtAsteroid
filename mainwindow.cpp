@@ -56,6 +56,7 @@ void MainWindow::link_events (){    //button event linking
     connect(optionsButton, &QPushButton::pressed, this, &MainWindow::display_option_menu);
     connect(scoreboardButton, &QPushButton::pressed, this, &MainWindow::display_scoreboard_menu);
 
+    mainGame->connectGameOver(this, SLOT(game_return_to_main_menu()));
     optionMenu->connectReturnButton(this, SLOT(option_return_to_main_menu()) );
     scoreboardMenu->backToMenu(this, SLOT(scoreboard_return_to_main_menu()) );
 }
@@ -89,5 +90,10 @@ void MainWindow::option_return_to_main_menu () {
 
 void MainWindow::scoreboard_return_to_main_menu () {
     scoreboardMenu = (ScoreBoardMenu*)takeCentralWidget();
+    setCentralWidget(mainMenu);
+}
+
+void MainWindow::game_return_to_main_menu() {
+    mainGame = (AsteroidGame*)takeCentralWidget();
     setCentralWidget(mainMenu);
 }
