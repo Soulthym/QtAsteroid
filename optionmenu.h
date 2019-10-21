@@ -19,10 +19,12 @@ public:
 
 signals:
     void signal_sound_volume_changed (qreal newSoundVolume);
+    void difficulty_changed (int index);
 
 public slots:
     void display_remove_confirmation ();
     void change_sound_volume (int value);
+    void change_difficulty (int index);
 
 private :
     QGridLayout *optionMenu;

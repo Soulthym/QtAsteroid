@@ -3,12 +3,13 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {    //instatiate other windows here
     setMinimumWidth(500);
-    setMinimumHeight(400);
+    setMinimumHeight(500);
 
     create_main_menu ();
+    scoreboardMenu = new ScoreBoardMenu (parent);
     mainGame = new AsteroidGame (parent);
     optionMenu = new OptionMenu (parent);
-    scoreboardMenu = new ScoreBoardMenu (parent);
+
     link_events ();
 
     setCentralWidget(mainMenu);

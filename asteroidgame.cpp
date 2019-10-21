@@ -6,32 +6,35 @@ AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
     QObject::connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
     refreshTimer->setSingleShot(false);
     refreshTimer->start(1000 / 60); // 1/60s
-    isPaused = true;
 
     //instantiate asteroids
-    spawn_asteroids (BIG, 5);
+    change_difficulty(1);
+    spawn_asteroids (BIG, 5, asteroidBaseSpeed);
+    isPaused = true;
 
     // start chronometers
     absoluteTime.start();
     interframeTime.start();
 
-    //
+    //instantiate player
     playerShip = new PlayerShip();
     connect(playerShip, SIGNAL(newProjectile(Projectile*)), this, SLOT(newProjectile(Projectile*)));
+
+    //sound system
     pew.setSource(QUrl::fromLocalFile("./16bit-pew.wav"));
     boum.setSource(QUrl::fromLocalFile("./8bit-explosion-SFX.wav"));
     scoreFilename="./scores.csv";
 }
 
-void AsteroidGame::spawn_asteroids (AsteroidSizes size, int number) {
-    for (int i=0; i<number; i++) {
+void AsteroidGame::spawn_asteroids (AsteroidSizes size, int numberToSpawn, qreal asteroidSpeed) {
+    for (int i=0; i<numberToSpawn; i++) {
         qreal placement = QRandomGenerator::global()->bounded(0.95);
         asteroidSet << new Asteroid (size,
                                      QPointF(
                                         placement * numberSet[QRandomGenerator::global()->bounded(2)],
                                         (1.0-placement) * numberSet[QRandomGenerator::global()->bounded(2)]
                                      ),
-                                     0.06);
+                                     asteroidSpeed);
     }
 }
 
@@ -40,17 +43,15 @@ void AsteroidGame::refresh() {
     const qreal dt = interframeTime.nsecsElapsed() * 1e-9; interframeTime.restart();
 
     if (isPaused)
-        return;
+        return; //game paused : no events treated
 
     playerShip->animate(t, dt, pressedKeys);
 
-    foreach (Asteroid* ast, asteroidSet) {
+    foreach (Asteroid* ast, asteroidSet)
         ast->animate(dt);
-    }
 
-    foreach (Projectile* p, projectiles) {
+    foreach (Projectile* p, projectiles)
         p->animate(t, dt, pressedKeys);
-    }
 
     // trigger redraw
     update();
@@ -88,14 +89,19 @@ void AsteroidGame::paintEvent(QPaintEvent* event) {
     playerShip->draw(&painter, frame);
     score.draw(&painter, frame);
 
-    foreach (Projectile* p, projectiles) {
+    foreach (Projectile* p, projectiles)
           p->draw(&painter, frame);
-      }
 
-    foreach (Asteroid* ast, asteroidSet) {
+    foreach (Asteroid* ast, asteroidSet)
         ast->draw(&painter);
+
+    collisions ();  //handle collisions
+
+    //new wave
+    if (asteroidSet.empty()) {
+        asteroidSpeed *= 1.1;
+        spawn_asteroids (BIG, 5, asteroidSpeed);
     }
-    collisions ();
 }
 
 void AsteroidGame::newProjectile(Projectile* projectile) {
@@ -131,8 +137,10 @@ void AsteroidGame::collisions () {
                 score.add(1);
                 QPair<Asteroid*, Asteroid*> *res = ast->destroy();
                 if (res != nullptr and res->first != nullptr and res->second != nullptr) {
+                    //divide asteroid
                     newAsteroids << res->first << res->second;
                 }
+                //destroy asteroid
                 delAsteroids << ast;
             }
         }
@@ -143,8 +151,7 @@ void AsteroidGame::collisions () {
         asteroidSet.insert (ast);
     foreach (Asteroid *ast, delAsteroids)
         asteroidSet.remove (ast);
-    foreach (Projectile *p, toDestroy)
-        toDestroy.remove (p);
+    toDestroy.clear ();
 }
 
 void AsteroidGame::keyPressEvent(QKeyEvent* event) {
@@ -187,7 +194,8 @@ void AsteroidGame::gameOver() {
     playerShip->reset();
 
     isPaused = true;
-    spawn_asteroids (BIG, 5);
+
+    spawn_asteroids (BIG, 5, asteroidBaseSpeed);
     emit backToMenu();
 }
 
@@ -195,3 +203,8 @@ void AsteroidGame::connectGameOver (const QObject *receiver, const char * slotMe
     //called by MainWindow to return when Game is Over
     connect (this, SIGNAL(backToMenu()), receiver, slotMemberFunction);
 }
+
+void AsteroidGame::change_difficulty(int index) {
+    asteroidSpeed = asteroidBaseSpeed = asteroidSpeeds [index];
+}
+

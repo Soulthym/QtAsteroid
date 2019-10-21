@@ -32,6 +32,8 @@ OptionMenu::OptionMenu(QWidget *parent) : QWidget(parent)
     difficulty->addItems(diffChoices);
     difficulty->setCurrentIndex(1);
     diffLabel->setAlignment(Qt::AlignCenter);
+    connect (difficulty, SIGNAL (currentIndexChanged (int)), this, SLOT(change_difficulty(int)));
+    change_difficulty (1);
 
     //sound slider setup
     soundSlider->setOrientation(Qt::Orientation::Horizontal);
@@ -41,6 +43,7 @@ OptionMenu::OptionMenu(QWidget *parent) : QWidget(parent)
     displaySoundValue->setAlignment(Qt::AlignCenter);
 
     connect (soundSlider, &QSlider::valueChanged, this, &OptionMenu::change_sound_volume);
+    change_sound_volume ((int)(soundVolume * 100.0));
 
     //set grid layout
     for(int i=0; i<3; i++) {
@@ -75,6 +78,10 @@ qreal OptionMenu::get_sound_volume () {
 /*
  * SLOTS
  */
+
+void OptionMenu::change_difficulty (int index) {
+    emit difficulty_changed (index);
+}
 
 void OptionMenu::change_sound_volume (int value) {
     soundVolume = QAudio::convertVolume(value / (qreal)100.0,
