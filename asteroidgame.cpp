@@ -22,7 +22,7 @@ AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
     connect(playerShip, SIGNAL(newProjectile(Projectile*)), this, SLOT(newProjectile(Projectile*)));
     pew.setSource(QUrl::fromLocalFile("./16bit-pew.wav"));
     boum.setSource(QUrl::fromLocalFile("./8bit-explosion-SFX.wav"));
-    scoreFilename = "./scores.csv";
+    scoreFilename="./scores.csv";
 }
 
 void AsteroidGame::refresh() {
