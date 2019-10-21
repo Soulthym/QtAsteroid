@@ -19,6 +19,8 @@ AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
     //
     playerShip = new PlayerShip();
     connect(playerShip, SIGNAL(newProjectile(Projectile*)), this, SLOT(newProjectile(Projectile*)));
+    pew.setSource(QUrl::fromLocalFile("./16bit-pew.wav"));
+    boum.setSource(QUrl::fromLocalFile("./8bit-explosion-SFX.wav"));
 }
 
 void AsteroidGame::refresh() {
@@ -79,7 +81,7 @@ void AsteroidGame::paintEvent(QPaintEvent* event) {
 void AsteroidGame::newProjectile(Projectile* projectile) {
     projectiles.insert(projectile);
     connect(projectile, SIGNAL(destroyed()), this, SLOT(projectileDestroyed()));
-    QSound::play("16bit-pew.wav");
+    pew.play();
 }
 
 void AsteroidGame::projectileDestroyed() {
@@ -102,7 +104,7 @@ void AsteroidGame::collisions () {
         foreach (Asteroid* ast, asteroidSet) {
             if (ast->is_intersecting (p->get_shape  ())) {
                 p->destroy();
-                QSound::play("8bit-explosion-SFX.wav");
+                boum.play();
                 toDestroy << p;
                 score.add(1);
                 QPair<Asteroid*, Asteroid*> *res = ast->destroy();

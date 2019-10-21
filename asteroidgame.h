@@ -2,7 +2,7 @@
 #define ASTEROIDGAME_H
 
 #include <QtWidgets>
-#include <QtMultimedia/QSound>
+#include <QtMultimedia/QSoundEffect>
 
 #include "playership.h"
 #include "score.h"
@@ -40,6 +40,8 @@ private:
     QElapsedTimer interframeTime;
     Score score;
     QSet<int> pressedKeys;
+    QSoundEffect pew;
+    QSoundEffect boum;
 };
 
 #endif // ASTEROIDGAME_H
