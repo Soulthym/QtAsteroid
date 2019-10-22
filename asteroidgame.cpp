@@ -82,10 +82,6 @@ void AsteroidGame::refresh() {
     update();
 }
 
-void AsteroidGame::sound_changed (qreal volume) {
-    pew.setVolume(volume);
-    boum.setVolume(volume);
-}
 
 void AsteroidGame::paintEvent(QPaintEvent* event) {
     const QColor bgColor(Qt::black);
@@ -244,6 +240,22 @@ void AsteroidGame::change_difficulty(int index) {
 }
 unsigned int AsteroidGame::getScore() {
     return lastscore;
+}
+
+void AsteroidGame::change_sound (int value) {
+    sound_changed(QAudio::convertVolume(value / (qreal)100.0,
+                                        QAudio::VolumeScale::LinearVolumeScale,
+                                        QAudio::VolumeScale::LogarithmicVolumeScale
+                                        )
+                  );
+}
+
+
+void AsteroidGame::sound_changed (qreal volume) {
+    pew.setVolume(volume);
+    emit pew.volumeChanged();
+    boum.setVolume(volume);
+    emit boum.volumeChanged();
 }
 
 void AsteroidGame::set_unpaused () {

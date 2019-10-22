@@ -4,6 +4,7 @@
 #include <QtWidgets>
 #include <QtMultimedia/QSoundEffect>
 #include <QVBoxLayout>
+#include <QAudio>
 
 #include "playership.h"
 #include "score.h"
@@ -28,6 +29,7 @@ public slots:
     void newProjectile(Projectile*);
     void projectileDestroyed();
     void sound_changed (qreal volume);
+    void change_sound (int value);
     void change_difficulty (int index);
     void set_unpaused ();
     void return_to_mainmenu ();
