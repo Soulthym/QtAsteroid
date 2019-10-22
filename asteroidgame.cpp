@@ -151,7 +151,7 @@ void AsteroidGame::collisions () {
 
 void AsteroidGame::keyPressEvent(QKeyEvent* event) {
     pressedKeys.insert(event->key());
-    if (event->key() == Qt::Key_Space) {
+    if (event->key() == Qt::Key_Space && !event->isAutoRepeat()) {
             playerShip->shoot();
             return;
     }
