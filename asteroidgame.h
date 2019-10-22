@@ -17,6 +17,7 @@ public:
     explicit AsteroidGame(QWidget* parent = nullptr);
     void connectGameOver (const QObject *receiver, const char * slotMemberFunction );
     bool isPaused;
+    unsigned int getScore();
 
 signals:
     void backToMenu();
@@ -60,6 +61,7 @@ private:
     QSoundEffect boum;
 
     QString scoreFilename;
+    unsigned int lastscore;
 };
 
 #endif // ASTEROIDGAME_H

@@ -24,6 +24,7 @@ AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
     pew.setSource(QUrl::fromLocalFile("./16bit-pew.wav"));
     boum.setSource(QUrl::fromLocalFile("./8bit-explosion-SFX.wav"));
     scoreFilename="./scores.csv";
+    lastscore = 0;
 }
 
 void AsteroidGame::spawn_asteroids (AsteroidSizes size, int numberToSpawn, qreal asteroidSpeed) {
@@ -181,6 +182,7 @@ void AsteroidGame::gameOver() {
         QTextStream stream(&csvFile);
         stream << QDir::home().dirName() << ',' << score.getScore() << endl;
     }
+    lastscore = score.getScore();
     score.reset();
     projectiles.clear();
     asteroidSet.clear();
@@ -202,4 +204,6 @@ void AsteroidGame::change_difficulty(int index) {
     difficulty = index;
     asteroidSpeed = asteroidBaseSpeed = asteroidSpeeds [index];
 }
-
+unsigned int AsteroidGame::getScore() {
+    return lastscore;
+}
