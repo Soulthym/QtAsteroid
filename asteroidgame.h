@@ -43,6 +43,7 @@ private:
     qreal asteroidSpeeds [3] = {0.03, 0.07, 0.12};
     qreal asteroidBaseSpeed;
     qreal asteroidSpeed;
+    int difficulty;
 
     QSet <Projectile*> projectiles;
     QSet <Asteroid*> asteroidSet;

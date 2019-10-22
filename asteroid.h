@@ -23,6 +23,8 @@ public:
     void draw (QPainter* painter);
     void animate (const qreal& dt);
 
+    int get_score ();
+
     bool is_intersecting (QPolygonF toTest);
     bool is_intersecting (QPointF toTest);
 

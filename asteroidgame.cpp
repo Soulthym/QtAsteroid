@@ -131,7 +131,7 @@ void AsteroidGame::collisions () {
             //    continue;
             if (ast->is_intersecting (p->get_shape  ())) {  //projectile intersects asteroid
                 boum.play();
-                score.add(1);
+                score.add( ast->get_score () * (1 + difficulty * 10));
 
                 //divide asteroid ?
                 QPair<Asteroid*, Asteroid*> *res = ast->destroy();
@@ -199,6 +199,7 @@ void AsteroidGame::connectGameOver (const QObject *receiver, const char * slotMe
 }
 
 void AsteroidGame::change_difficulty(int index) {
+    difficulty = index;
     asteroidSpeed = asteroidBaseSpeed = asteroidSpeeds [index];
 }
 

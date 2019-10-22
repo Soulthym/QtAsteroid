@@ -32,6 +32,17 @@ Asteroid::Asteroid (AsteroidSizes _size, QPointF initialPos, qreal _maxSpeed, QO
     shape << QPointF (radius * qCos (angle), radius * qSin (angle));    //close the shape
 }
 
+int Asteroid::get_score () {
+    switch (size) {
+        case BIG :
+            return 50 * int (1.0 + maxSpeed);
+        case MEDIUM:
+            return 150 * int (1.0 + maxSpeed);
+        case SMALL:
+            return 300 * int (1.0 + maxSpeed);
+    }
+}
+
 void Asteroid::draw (QPainter* painter) {
     painter->save ();
 
