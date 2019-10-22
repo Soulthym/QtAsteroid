@@ -42,14 +42,18 @@ void ScoreBoardMenu::loadCsv(const QString filename, QTableWidget *table) {
             table->setRowCount(++rowCount);
             maxRowCount = std::max(maxRowCount, line.size());
             table->setColumnCount(maxRowCount);
-            int column = 0;
-            for ( const auto& item : line) {
-                table->setItem(rowCount-1, column++, new QTableWidgetItem(item));
-            }
+			
+			table->setItem(rowCount-1, 0, new QTableWidgetItem(line[0]));
+
+			QTableWidgetItem *scoreItem = new QTableWidgetItem;
+			scoreItem->setData(Qt::EditRole, line[1].toInt());    
+			table->setItem(rowCount-1, 1, scoreItem);
         }
         inputFile.close();
     }
     table->setHorizontalHeaderLabels({"Player","Score"});
+
+	table->sortByColumn(1, Qt::DescendingOrder);
 }
 
 void ScoreBoardMenu::backToMenu(const QObject *receiver, const char *slotMemberFunction) {
