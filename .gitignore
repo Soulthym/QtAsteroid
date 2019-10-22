@@ -9,3 +9,5 @@ moc_*.cpp
 moc_*.h
 *.o
 QtAsteroid
+
+scores.csv
