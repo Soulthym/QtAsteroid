@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 #include <QtMultimedia/QSoundEffect>
+#include <QVBoxLayout>
 
 #include "playership.h"
 #include "score.h"
@@ -20,7 +21,7 @@ public:
     unsigned int getScore();
 
 signals:
-    void backToMenu();
+    void backToMenu(bool playerDead);
 
 public slots:
     void refresh();
@@ -28,6 +29,8 @@ public slots:
     void projectileDestroyed();
     void sound_changed (qreal volume);
     void change_difficulty (int index);
+    void set_unpaused ();
+    void return_to_mainmenu ();
 
 protected:
     void paintEvent(QPaintEvent*) override;
@@ -37,9 +40,16 @@ protected:
     void spawn_asteroids (AsteroidSizes size, int number, qreal asteroidSpeed);
 
     void collisions ();
-    void gameOver();
+    void gameOver(bool playerDead);
 
 private:
+    QBoxLayout *mainLayout;
+    QWidget *pauseMenuWidget;
+    QVBoxLayout *pauseMenu;
+    QPushButton *returnToGameButton;
+    QPushButton *mainMenuButton;
+    QSlider *soundSlider;
+
     int numberSet[2] = {-1, 1};
     qreal asteroidSpeeds [3] = {0.03, 0.07, 0.12};
     qreal asteroidBaseSpeed;

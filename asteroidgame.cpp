@@ -1,6 +1,30 @@
 #include "asteroidgame.h"
 
 AsteroidGame::AsteroidGame(QWidget* parent) : QWidget(parent) {
+    //init pause menu
+    mainLayout = new QBoxLayout (QBoxLayout::LeftToRight, this);
+    mainLayout->setContentsMargins(5, 5, 5, 5);
+    pauseMenuWidget = new QWidget (this);
+    pauseMenu = new QVBoxLayout (pauseMenuWidget);
+    returnToGameButton = new QPushButton ("Return to Game");
+    mainMenuButton = new QPushButton ("Main Menu");
+    soundSlider = new QSlider;
+    soundSlider->setOrientation(Qt::Orientation::Horizontal);
+    soundSlider->setRange(0, 100);
+    soundSlider->setValue(50);
+
+    connect (returnToGameButton, &QPushButton::pressed, this, &AsteroidGame::set_unpaused);
+    connect (mainMenuButton, &QPushButton::pressed, this, &AsteroidGame::return_to_mainmenu);
+    connect (soundSlider, &QSlider::valueChanged, this, &AsteroidGame::sound_changed);
+
+    pauseMenu->addWidget(returnToGameButton);
+    pauseMenu->addWidget(mainMenuButton);
+    pauseMenu->addWidget(soundSlider);
+    pauseMenuWidget->setVisible(false);
+    pauseMenuWidget->setAttribute(Qt::WA_TranslucentBackground, true);
+    pauseMenuWidget->setHidden(true);
+    mainLayout->addWidget (pauseMenuWidget, Qt::AlignCenter);
+
     // set FPS timer
     refreshTimer = new QTimer();
     QObject::connect(refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
@@ -98,7 +122,7 @@ void AsteroidGame::paintEvent(QPaintEvent* event) {
 
     collisions ();  //handle collisions
 
-    //new wave
+    //new asteroid wave
     if (asteroidSet.empty()) {
         asteroidSpeed *= 1.1;
         spawn_asteroids (BIG, 5, asteroidSpeed);
@@ -120,7 +144,7 @@ void AsteroidGame::collisions () {
     //Is player dead ?
     foreach (Asteroid* ast, asteroidSet) {
         if (ast->is_intersecting(playerShip->get_player_polygon())) {
-            gameOver();
+            gameOver(true);
             return;
         }
     }
@@ -151,15 +175,24 @@ void AsteroidGame::collisions () {
 
 void AsteroidGame::keyPressEvent(QKeyEvent* event) {
     pressedKeys.insert(event->key());
-    if (event->key() == Qt::Key_Space && !event->isAutoRepeat()) {
+    if (event->key() == Qt::Key_Space and !event->isAutoRepeat()) {
+        if (!isPaused)
             playerShip->shoot();
-            return;
+        return;
     }
     if (event->key() == Qt::Key_Escape) {
         isPaused = !isPaused;
         if (isPaused) {
             //print menu
-
+            pauseMenuWidget->setVisible(true);
+            pauseMenuWidget->setHidden(false);
+            pauseMenuWidget->setFocus();
+        }
+        else {
+            //remove pause menu
+            pauseMenuWidget->setVisible(false);
+            pauseMenuWidget->setHidden(true);
+            this->setFocus();
         }
     }
 }
@@ -176,13 +209,15 @@ void AsteroidGame::resizeEvent(QResizeEvent* event) {
     QWidget::resize(sideSize, sideSize);
 }
 
-void AsteroidGame::gameOver() {
-    QFile csvFile(scoreFilename);
-    if (csvFile.open(QIODevice::Append)) {
-        QTextStream stream(&csvFile);
-        stream << QDir::home().dirName() << ',' << score.getScore() << endl;
+void AsteroidGame::gameOver(bool playerDead) {
+    if (playerDead) {
+        QFile csvFile(scoreFilename);
+        if (csvFile.open(QIODevice::Append)) {
+            QTextStream stream(&csvFile);
+            stream << QDir::home().dirName() << ',' << score.getScore() << endl;
+        }
+        lastscore = score.getScore();
     }
-    lastscore = score.getScore();
     score.reset();
     projectiles.clear();
     asteroidSet.clear();
@@ -192,12 +227,15 @@ void AsteroidGame::gameOver() {
     isPaused = true;
 
     spawn_asteroids (BIG, 5, asteroidBaseSpeed);
-    emit backToMenu();
+    pauseMenuWidget->setVisible(false);
+    pauseMenuWidget->setHidden(true);
+    this->setFocus();
+    emit backToMenu(playerDead);
 }
 
 void AsteroidGame::connectGameOver (const QObject *receiver, const char * slotMemberFunction ) {
     //called by MainWindow to return when Game is Over
-    connect (this, SIGNAL(backToMenu()), receiver, slotMemberFunction);
+    connect (this, SIGNAL(backToMenu(bool)), receiver, slotMemberFunction);
 }
 
 void AsteroidGame::change_difficulty(int index) {
@@ -206,4 +244,16 @@ void AsteroidGame::change_difficulty(int index) {
 }
 unsigned int AsteroidGame::getScore() {
     return lastscore;
+}
+
+void AsteroidGame::set_unpaused () {
+    //stop pause display
+    isPaused = false;
+    pauseMenuWidget->setVisible(false);
+    pauseMenuWidget->setHidden(true);
+    this->setFocus();
+}
+void AsteroidGame::return_to_mainmenu () {
+    //stop pause display
+    gameOver(false);
 }
