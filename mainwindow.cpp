@@ -57,7 +57,7 @@ void MainWindow::link_events (){    //button event linking
     connect(optionsButton, &QPushButton::pressed, this, &MainWindow::display_option_menu);
     connect(scoreboardButton, &QPushButton::pressed, this, &MainWindow::display_scoreboard_menu);
 
-    mainGame->connectGameOver(this, SLOT(game_return_to_main_menu()));
+    mainGame->connectGameOver(this, SLOT(game_return_to_main_menu(bool)));
     optionMenu->connectReturnButton(this, SLOT(option_return_to_main_menu()) );
     scoreboardMenu->backToMenu(this, SLOT(scoreboard_return_to_main_menu()) );
 
@@ -98,9 +98,22 @@ void MainWindow::scoreboard_return_to_main_menu () {
     setCentralWidget(mainMenu);
 }
 
-void MainWindow::game_return_to_main_menu() {
-    QString Sscore = QString::number(long(mainGame->getScore()));
-    gameTitle->setText(QString("Game Over\nscore : ").append(Sscore));
+void MainWindow::game_return_to_main_menu(bool playerDead) {
+    if (playerDead) {
+        QString Sscore = QString::number(long(mainGame->getScore()));
+        gameTitle->setText(QString("Game Over\nscore : ").append(Sscore));
+        QFont font = gameTitle->font();
+        font.setPointSize(40);
+        font.setBold(true);
+        gameTitle->setFont(font);
+    }
+    else {
+        gameTitle->setText("AsQtroids");
+        QFont font = gameTitle->font();
+        font.setPointSize(72);
+        font.setBold(true);
+        gameTitle->setFont(font);
+    }
     mainGame = (AsteroidGame*)takeCentralWidget();
     setCentralWidget(mainMenu);
 }
