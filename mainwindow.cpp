@@ -99,6 +99,8 @@ void MainWindow::scoreboard_return_to_main_menu () {
 }
 
 void MainWindow::game_return_to_main_menu() {
+    QString Sscore = QString::number(long(mainGame->getScore()));
+    gameTitle->setText(QString("Game Over\nscore : ").append(Sscore));
     mainGame = (AsteroidGame*)takeCentralWidget();
     setCentralWidget(mainMenu);
 }
