@@ -33,13 +33,14 @@ Asteroid::Asteroid (AsteroidSizes _size, QPointF initialPos, qreal _maxSpeed, QO
 }
 
 int Asteroid::get_score () {
+    int score = int ((velocity.rx()+velocity.ry()+1)/2.0 * 10.0);
     switch (size) {
         case BIG :
-            return 50 * int (1.0 + maxSpeed);
+            return 50 * score;
         case MEDIUM:
-            return 150 * int (1.0 + maxSpeed);
+            return 150 * score;
         case SMALL:
-            return 300 * int (1.0 + maxSpeed);
+            return 300 * score;
     }
 }
 
