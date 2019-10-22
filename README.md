@@ -6,4 +6,4 @@ Baptiste Hudyma
 Thybault Alabarbe  
 Fabien Goglio  
 ## Dependencies
-The project relies on the QSoundEffect class, which in some cases requieres additional drivers (pulseaudio under linux for example).
+The project relies on the QSoundEffect class, which in some cases requieres additional drivers (qt-gstreamer under Arch-Linux for example).
