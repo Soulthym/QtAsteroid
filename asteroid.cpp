@@ -42,6 +42,7 @@ int Asteroid::get_score () {
         case SMALL:
             return 300 * score;
     }
+    return 0;
 }
 
 void Asteroid::draw (QPainter* painter) {
